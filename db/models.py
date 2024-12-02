@@ -23,5 +23,6 @@ class DBBook(Base):
     author_id = Column(Integer, ForeignKey("author.id"))
     author = relationship("DBAuthor", back_populates="books")
 
-    def str(self):
-        return f"{self.publication_date.strftime("%Y-%m-%d")}"
+    def __str__(self):
+        if self.publication_date is not None:
+            return f"{self.publication_date.strftime("%Y-%m-%d")}"
