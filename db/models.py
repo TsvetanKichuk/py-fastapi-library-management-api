@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
 from db.engine import Base
@@ -19,7 +19,9 @@ class DBBook(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(255), nullable=False)
     summary = Column(String(255))
-    publication_date = Column(DateTime)
+    publication_date = Column(Date, nullable=False)
     author_id = Column(Integer, ForeignKey("author.id"))
     author = relationship("DBAuthor", back_populates="books")
 
+    def str(self):
+        return f"{self.publication_date.strftime("%Y-%m-%d")}"

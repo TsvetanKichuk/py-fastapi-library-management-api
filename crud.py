@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy.orm import Session
 
 import schemas
@@ -30,7 +32,7 @@ def create_author(db: Session, author: schemas.AuthorCreate):
 def get_book_list(
         db: Session,
         title: str | None = None,
-        publication_date: str | None = None,
+        publication_date: date | None = None,
         summary: str | None = None,
         author: str | None = None,
 ):
@@ -47,7 +49,7 @@ def get_book_list(
 
     if author is not None:
         queryset = queryset.filter(models.DBBook.author.has(name=author))
-        return queryset.all()
+    return queryset.all()
 
 
 def get_book(db: Session, book_id: int):
@@ -61,5 +63,9 @@ def create_book(db: Session, book: schemas.BookCreate):
         publication_date=book.publication_date,
         author_id=book.author_id,
     )
+
+    db.add(db_book)
+    db.commit()
+    db.refresh(db_book)
     return db_book
 

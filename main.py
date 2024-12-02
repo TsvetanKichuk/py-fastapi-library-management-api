@@ -1,3 +1,5 @@
+import datetime
+
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -39,11 +41,12 @@ def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
 @app.get("/book/", response_model=list[schemas.BookBase])
 def read_book(
         title: str | None = None,
-        publication_date: str | None = None,
+        publication_date: datetime.date | None = None,
         summary: str | None = None,
         author: str | None = None,
         db: Session = Depends(get_db),
 ):
+
     return crud.get_book_list(
         db=db,
         title=title,
